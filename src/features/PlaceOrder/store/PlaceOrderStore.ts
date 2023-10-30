@@ -34,6 +34,7 @@ export class PlaceOrderStore {
 
   @action
   public setOrderSide = (side: OrderSide) => {
+    this.setIsTargetsOn(false);
     this.activeOrderSide = side;
   };
 
@@ -54,6 +55,11 @@ export class PlaceOrderStore {
 
   @action
   public setIsTargetsOn = (value: boolean) => {
+    if (value) {
+      this.addNewTarget();
+    } else {
+      this.targetList = [];
+    }
     this.isTargetsOn = value;
   };
 
