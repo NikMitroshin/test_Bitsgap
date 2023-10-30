@@ -1,5 +1,5 @@
 import { Button as MUIButton, ButtonProps } from "@mui/material";
-import cn from "classnames";
+import * as cn from "classnames";
 
 import styles from "./Button.module.scss";
 

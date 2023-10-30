@@ -7,10 +7,10 @@ import {
   KeyboardEvent,
   ChangeEvent,
 } from "react";
-import * as R from "remeda";
 
-import { escapeRegexpSymbols } from "shared/utils/escapeRegexpSymbols";
+import * as R from "remeda";
 import { convertExponentialToNormal } from "shared/utils/convertExponentialToNormal";
+import { escapeRegexpSymbols } from "shared/utils/escapeRegexpSymbols";
 
 interface FormatOptions {
   suffix?: string;
@@ -39,12 +39,12 @@ function useNumberFormat(
     decimalScale,
   }: FormatOptions = {},
 ) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [focused, setFocused] = useState(false);
   const [caretPosition, setCaretPosition] = useState([0, 0]);
 
-  const safePrefix = escapeRegexpSymbols(prefix);
-  const safeSuffix = escapeRegexpSymbols(suffix);
+  const safePrefix = escapeRegexpSymbols(prefix || "");
+  const safeSuffix = escapeRegexpSymbols(suffix || "");
   const prefixRegExp = RegExp(`^(-)?(${safePrefix})`);
   const suffixRegExp = RegExp(`(${safeSuffix})$`);
   const signRegExp = RegExp(`^-(${safePrefix})`);
@@ -66,7 +66,7 @@ function useNumberFormat(
 
   useEffect(() => {
     setFormattedValue(validateAndGetValue(formatNumber(numberValue), true));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const isFormattingBroken = (value: string) =>
     !/^-?\s*$/.test(formattedValue) &&
@@ -90,18 +90,17 @@ function useNumberFormat(
     if (focused) {
       inputRef.current?.setSelectionRange(start, end);
     }
-  }, [caretPosition]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [caretPosition]);
 
   useEffect(() => {
     if (!focused) {
       updateStateByValue(formatNumber(numberValue), true);
     }
-  }, [numberValue]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [numberValue]);
 
   const refreshValue = () =>
     updateStateByValue(formatNumber(numberValue), true);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(refreshValue, [decimalScale, min, max, prefix, suffix]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -156,8 +155,8 @@ function useNumberFormat(
 
   function correctCaretPosition(start: number, end: number) {
     const value = inputRef.current?.value ?? "";
-    const leftBound = prefix.length + (signRegExp.test(value) ? 1 : 0);
-    const rightBound = value.length - suffix.length;
+    const leftBound = prefix?.length + (signRegExp.test(value) ? 1 : 0);
+    const rightBound = value.length - suffix?.length;
     const position =
       leftBound <= rightBound
         ? R.clamp(start, { min: leftBound, max: rightBound })

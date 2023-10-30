@@ -1,14 +1,12 @@
 import { observer } from "mobx-react";
-
-import { QuestionTooltip } from "shared/components/QuestionTooltip/QuestionTooltip";
 import { Button } from "shared/components/Button/Button";
 import { NumberInput } from "shared/components/NumberInput/NumberInput";
+import { QuestionTooltip } from "shared/components/QuestionTooltip/QuestionTooltip";
 
-import { BASE_CURRENCY, QUOTE_CURRENCY } from "./constants";
-import { useStore } from "./context";
 import { PlaceOrderTypeSwitch } from "./components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch";
 import { TakeProfit } from "./components/TakeProfit/TakeProfit";
-
+import { BASE_CURRENCY, QUOTE_CURRENCY } from "./constants";
+import { useStore } from "./context";
 import styles from "./PlaceOrderForm.module.scss";
 
 export const PlaceOrderForm = observer(() => {

@@ -1,9 +1,9 @@
 import * as R from "remeda";
-
 import {
   TextInput,
   TextInputProps,
 } from "shared/components/TextInput/TextInput";
+
 import { useNumberFormat } from "./useNumberFormat";
 
 type Props = Omit<TextInputProps, "onChange" | "value"> & {

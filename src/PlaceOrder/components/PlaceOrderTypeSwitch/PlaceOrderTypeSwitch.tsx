@@ -1,7 +1,7 @@
 import { Button } from "shared/components/Button/Button";
-import type { OrderSide } from "../../model";
 
 import styles from "./PlaceOrderTypeSwitch.module.scss";
+import type { OrderSide } from "../../model";
 
 interface Props {
   activeOrderSide: OrderSide;

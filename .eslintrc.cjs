@@ -19,7 +19,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  ignorePatterns: ['.eslintrc.js', 'setupTests.ts', 'lint-staged.config.js'],
+  ignorePatterns: ['.eslintrc.js', 'setupTests.ts', 'lint-staged.config.js', 'vite.config.ts'],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'react/prop-types': 'off',

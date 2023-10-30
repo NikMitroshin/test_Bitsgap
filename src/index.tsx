@@ -1,5 +1,5 @@
-import { createRoot } from "react-dom/client";
 import { StyledEngineProvider } from "@mui/material/styles";
+import { createRoot } from "react-dom/client";
 
 import App from "./App";
 import "./styles/index.scss";

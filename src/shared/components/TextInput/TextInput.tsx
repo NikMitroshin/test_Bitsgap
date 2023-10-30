@@ -1,4 +1,5 @@
 import { useState, ReactNode, ChangeEvent, FocusEvent } from "react";
+
 import {
   TextField,
   TextFieldProps,
@@ -6,10 +7,10 @@ import {
   InputLabelProps as MUIInputLabelProps,
   TooltipProps,
 } from "@mui/material";
-import cn from "classnames";
+import * as cn from "classnames";
 
-import { Tooltip } from "../Tooltip/Tooltip";
 import styles from "./TextInput.module.scss";
+import { Tooltip } from "../Tooltip/Tooltip";
 
 type Props = Omit<
   TextFieldProps,

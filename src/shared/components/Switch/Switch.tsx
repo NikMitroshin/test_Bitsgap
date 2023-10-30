@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
-import cn from "classnames";
+
+import * as cn from "classnames";
 
 import styles from "./Switch.module.scss";
 
