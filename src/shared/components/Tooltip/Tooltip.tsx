@@ -38,12 +38,12 @@ function Tooltip({
         popper: styles.popper,
       }}
       placement={placement || "bottom"}
-      open={!!open}
+      open={open}
       arrow
       disableFocusListener // onFocus and onBlur do not work if using a Tooltip with TextField https://github.com/mui-org/material-ui/issues/19883#issuecomment-592980194
-      disableInteractive={!!disableInteractive}
-      disableHoverListener={!!disableHoverListener}
-      disableTouchListener={!!disableTouchListener}
+      disableInteractive={disableInteractive}
+      disableHoverListener={disableHoverListener}
+      disableTouchListener={disableTouchListener}
       onClose={onClose}
     >
       {children}

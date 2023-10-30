@@ -27,12 +27,10 @@ export const PlaceOrderForm = observer(() => {
         <QuestionTooltip message="Market direction description" />
       </div>
       <div className={styles.content}>
-        <div className={styles.typeSwitch}>
-          <PlaceOrderTypeSwitch
-            activeOrderSide={activeOrderSide}
-            onChange={setOrderSide}
-          />
-        </div>
+        <PlaceOrderTypeSwitch
+          activeOrderSide={activeOrderSide}
+          onChange={setOrderSide}
+        />
         <NumberInput
           label={`Price, ${QUOTE_CURRENCY}`}
           value={price}
