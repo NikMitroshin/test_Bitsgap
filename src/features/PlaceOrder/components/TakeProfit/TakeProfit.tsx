@@ -1,22 +1,15 @@
 import * as cn from "classnames";
 import AddButton from "features/PlaceOrder/components/TakeProfit/components/AddButton/AddButton";
-import TargetItem from "features/PlaceOrder/components/TakeProfit/components/TargetItem/TargetItem";
-import styles from "features/PlaceOrder/components/TakeProfit/TakeProfit.module.scss";
+import TargetsList from "features/PlaceOrder/components/TakeProfit/components/TargetsList/TargetsList";
 import { useStore } from "features/PlaceOrder/store/context";
 import { observer } from "mobx-react";
 import { QuestionTooltip } from "shared/components/QuestionTooltip/QuestionTooltip";
 import { Switch } from "shared/components/Switch/Switch";
 
+import styles from "./TakeProfit.module.scss";
+
 export const TakeProfit = observer(() => {
   const { isTargetsOn, targetList, setIsTargetsOn, addNewTarget } = useStore();
-
-  const renderTargetsList = () =>
-    targetList.map((item) => (
-      <TargetItem
-        key={`${item.profit}_${item.targetPrice}`}
-        targetItem={item}
-      />
-    ));
 
   return (
     <div className={cn(styles.root)}>
@@ -29,8 +22,8 @@ export const TakeProfit = observer(() => {
         />
       </div>
       {isTargetsOn && (
-        <div className={styles.targetsBox}>
-          {renderTargetsList()}
+        <div className={styles.open}>
+          {targetList.length && <TargetsList targetList={targetList} />}
           <AddButton count={targetList.length} onPress={addNewTarget} />
           {/*profit*/}
         </div>
