@@ -1,7 +1,6 @@
+import styles from "features/PlaceOrder/components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch.module.scss";
+import type { OrderSide } from "features/PlaceOrder/model";
 import { Button } from "shared/components/Button/Button";
-
-import styles from "./PlaceOrderTypeSwitch.module.scss";
-import type { OrderSide } from "../../model";
 
 interface Props {
   activeOrderSide: OrderSide;

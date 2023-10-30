@@ -1,6 +1,5 @@
+import type { OrderSide } from "features/PlaceOrder/model";
 import { observable, computed, action, makeObservable } from "mobx";
-
-import type { OrderSide } from "../model";
 
 export class PlaceOrderStore {
   constructor() {

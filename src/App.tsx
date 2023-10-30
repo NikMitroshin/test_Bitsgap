@@ -1,4 +1,4 @@
-import { PlaceOrder } from "PlaceOrder";
+import { PlaceOrder } from "features/PlaceOrder";
 
 import styles from "./App.module.scss";
 
