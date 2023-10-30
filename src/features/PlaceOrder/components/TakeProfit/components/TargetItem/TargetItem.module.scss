@@ -1,4 +1,42 @@
 .root {
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: 20% 40% 20% 20%;
+  grid-template-columns: 13% 40% 13% 19%;
+  gap: 0 5%;
+  padding: 9px 0;
+  border-bottom: 1px solid #A2A7B9;
 }
+.column {
+  display: flex;
+}
+.inputLabel {
+  display: none;
+}
+
+.label {
+  font-size: 12px;
+  line-height: 14px;
+}
+.price {
+  font-size: 12px;
+  line-height: 14px;
+  color: #FFF;
+  margin-right: 3px;
+}
+.delete {
+  margin-left: auto;
+}
+.inputRoot {
+  color: #fff;
+  font-size: 12px;
+  line-height: 14px;
+  background-color: transparent;
+
+  .input {
+    padding: 0;
+    font-size: 12px;
+    height: 14px;
+    background-color: transparent;
+  }
+}
+

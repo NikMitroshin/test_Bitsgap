@@ -2,6 +2,11 @@
   display: flex;
   align-items: center;
   margin: 8px 0;
+
+  &:hover {
+    cursor: pointer;
+    opacity: .7;
+  }
 }
 
 .label {

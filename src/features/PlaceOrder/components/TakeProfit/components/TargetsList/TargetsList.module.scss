@@ -1,9 +1,13 @@
 .root {
 
 }
-.head{
+.head {
   display: grid;
-  grid-template-columns: 20% 40% 40%;
+  grid-template-columns: 13% 41% 37%;
+  gap: 0 5%;
+  margin-top: 8px;
 }
 
-.label{}
+.label {
+  font-size: 12px;
+}

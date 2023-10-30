@@ -1,5 +1,5 @@
-import { PlusIcon } from "features/PlaceOrder/components/TakeProfit/components/PlusIcon/InfoIcon";
 import { MAX_TARGETS_LENGTH } from "features/PlaceOrder/constants";
+import { PlusIcon } from "icons/PlusIcon/InfoIcon";
 
 import styles from "./AddButton.module.scss";
 

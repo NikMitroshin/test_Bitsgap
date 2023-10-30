@@ -65,15 +65,15 @@ const TextInput = ({
         variant="filled"
         onChange={handleChange}
         InputLabelProps={{
-          ...InputLabelProps,
           classes: labelClasses,
+          ...InputLabelProps,
         }}
         InputProps={{
-          ...InputProps,
           onFocus: handleFocus,
           onBlur: handleBlur,
           disableUnderline: true,
           classes: inputClasses,
+          ...InputProps,
         }}
       />
     </Tooltip>
