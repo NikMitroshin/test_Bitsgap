@@ -4,6 +4,7 @@ export enum OrderSide {
 }
 
 export type ProfitTargetItem = {
+  id: string;
   profit: number;
   targetPrice: number;
   amountPercent: number;

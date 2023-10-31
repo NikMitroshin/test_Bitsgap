@@ -1,17 +1,28 @@
+import { useCallback } from "react";
+
 import TargetItem from "features/PlaceOrder/components/TakeProfit/components/TargetItem/TargetItem";
 import { ProfitTargetItem } from "features/PlaceOrder/model";
 
 import styles from "./TargetsList.module.scss";
 interface Props {
   targetList: ProfitTargetItem[];
+  delNewTarget: (item: ProfitTargetItem) => void;
 }
 
-const TargetsList = ({ targetList }: Props) => {
+const TargetsList = ({ targetList, delNewTarget }: Props) => {
+  const handleDelTarget = useCallback(
+    (item: ProfitTargetItem) => {
+      delNewTarget(item);
+    },
+    [delNewTarget],
+  );
+
   const renderTargetsList = () =>
     targetList.map((item) => (
       <TargetItem
-        key={`${item.profit}_${item.targetPrice}`}
+        key={item.id}
         targetItem={item}
+        handleDelTarget={handleDelTarget}
       />
     ));
 

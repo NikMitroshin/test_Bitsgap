@@ -9,7 +9,13 @@ import { Switch } from "shared/components/Switch/Switch";
 import styles from "./TakeProfit.module.scss";
 
 export const TakeProfit = observer(() => {
-  const { isTargetsOn, targetList, setIsTargetsOn, addNewTarget } = useStore();
+  const {
+    isTargetsOn,
+    targetList,
+    setIsTargetsOn,
+    addNewTarget,
+    delNewTarget,
+  } = useStore();
 
   return (
     <div className={cn(styles.root)}>
@@ -23,7 +29,9 @@ export const TakeProfit = observer(() => {
       </div>
       {isTargetsOn && (
         <div className={styles.open}>
-          {targetList.length && <TargetsList targetList={targetList} />}
+          {!!targetList.length && (
+            <TargetsList targetList={targetList} delNewTarget={delNewTarget} />
+          )}
           <AddButton count={targetList.length} onPress={addNewTarget} />
           {/*profit*/}
         </div>

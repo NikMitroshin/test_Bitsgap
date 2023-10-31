@@ -2,6 +2,7 @@ import { PROFIT_AMOUNT_STEP_DEFAULT } from "features/PlaceOrder/constants";
 import { calculateTargetPrice } from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
 import { observable, computed, action, makeObservable } from "mobx";
+import { nanoid } from "nanoid";
 
 export class PlaceOrderStore {
   constructor() {
@@ -19,15 +20,16 @@ export class PlaceOrderStore {
   }
 
   @action
-  distributePercentsInputs = (list: ProfitTargetItem[]) => {
+  distributePercentsInputs = () => {
     const percentEqually = Math.floor(100 / this.targetList.length);
 
     const percentLast = 100 - percentEqually * (this.targetList.length - 1);
 
-    this.targetList = list.map((item, index) => {
+    this.targetList = this.targetList.map((item, index) => {
       return {
         ...item,
-        amountPercent: index === list.length - 1 ? percentLast : percentEqually,
+        amountPercent:
+          index === this.targetList.length - 1 ? percentLast : percentEqually,
       };
     });
   };
@@ -93,11 +95,19 @@ export class PlaceOrderStore {
     const amountPercent = 0;
 
     list.push({
+      id: nanoid(),
       profit,
       targetPrice,
       amountPercent,
     });
 
-    this.distributePercentsInputs(list);
+    this.distributePercentsInputs();
+  };
+
+  @action
+  public delNewTarget = (item: ProfitTargetItem) => {
+    this.targetList = this.targetList.filter((elem) => elem.id !== item.id);
+
+    this.distributePercentsInputs();
   };
 }

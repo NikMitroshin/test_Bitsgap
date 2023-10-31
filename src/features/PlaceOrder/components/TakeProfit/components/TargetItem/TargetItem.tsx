@@ -9,9 +9,10 @@ import { NumberInput } from "shared/components/NumberInput/NumberInput";
 import styles from "./TargetItem.module.scss";
 interface Props {
   targetItem: ProfitTargetItem;
+  handleDelTarget: (item: ProfitTargetItem) => void;
 }
 
-const TargetItem = ({ targetItem }: Props) => {
+const TargetItem = ({ targetItem, handleDelTarget }: Props) => {
   const labelClasses: MUIInputLabelProps["classes"] = {
     root: styles.inputLabel,
   };
@@ -19,6 +20,10 @@ const TargetItem = ({ targetItem }: Props) => {
   const inputClasses: MUIInputLabelProps["classes"] = {
     root: styles.inputRoot,
     input: styles.input,
+  };
+
+  const handlePressDelete = () => {
+    handleDelTarget(targetItem);
   };
 
   return (
@@ -51,10 +56,7 @@ const TargetItem = ({ targetItem }: Props) => {
       </div>
 
       <div className={cn(styles.column, styles.delete)}>
-        <ButtonOnlyIcon
-          Icon={DeleteIcon}
-          onPress={() => console.log("delete")}
-        />
+        <ButtonOnlyIcon Icon={DeleteIcon} onPress={handlePressDelete} />
       </div>
     </div>
   );
