@@ -1,4 +1,7 @@
-export type OrderSide = "buy" | "sell";
+export enum OrderSide {
+  Buy = "buy",
+  Sell = "sell",
+}
 
 export type ProfitTargetItem = {
   profit: number;

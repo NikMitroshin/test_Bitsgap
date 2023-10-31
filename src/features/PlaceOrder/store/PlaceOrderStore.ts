@@ -1,6 +1,6 @@
 import { PROFIT_AMOUNT_STEP_DEFAULT } from "features/PlaceOrder/constants";
-import type { OrderSide } from "features/PlaceOrder/model";
-import { ProfitTargetItem } from "features/PlaceOrder/model";
+import { calculateTargetPrice } from "features/PlaceOrder/helpers/calculateHelpers";
+import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
 import { observable, computed, action, makeObservable } from "mobx";
 
 export class PlaceOrderStore {
@@ -8,7 +8,7 @@ export class PlaceOrderStore {
     makeObservable(this);
   }
 
-  @observable activeOrderSide: OrderSide = "buy";
+  @observable activeOrderSide: OrderSide = OrderSide.Buy;
   @observable price = 0;
   @observable amount = 0;
   @observable isTargetsOn = false;
@@ -19,7 +19,7 @@ export class PlaceOrderStore {
   }
 
   @action
-  distributePercentsEqually = (list: ProfitTargetItem[]) => {
+  distributePercentsInputs = (list: ProfitTargetItem[]) => {
     const percentEqually = Math.floor(100 / this.targetList.length);
 
     const percentLast = 100 - percentEqually * (this.targetList.length - 1);
@@ -33,6 +33,20 @@ export class PlaceOrderStore {
   };
 
   @action
+  distributePriceInputs = () => {
+    this.targetList = this.targetList.map((item) => {
+      return {
+        ...item,
+        targetPrice: calculateTargetPrice({
+          orderSide: this.activeOrderSide,
+          price: this.price,
+          profit: item.profit,
+        }),
+      };
+    });
+  };
+
+  @action
   public setOrderSide = (side: OrderSide) => {
     this.setIsTargetsOn(false);
     this.activeOrderSide = side;
@@ -41,6 +55,7 @@ export class PlaceOrderStore {
   @action
   public setPrice = (price: number) => {
     this.price = price;
+    this.distributePriceInputs();
   };
 
   @action
@@ -69,10 +84,11 @@ export class PlaceOrderStore {
     const lastElem = list[list.length - 1];
 
     const profit = (lastElem?.profit || 0) + PROFIT_AMOUNT_STEP_DEFAULT;
-    const targetPrice =
-      this.activeOrderSide === "buy"
-        ? this.price * 1 + profit / 100
-        : this.price * 1 - profit / 100;
+    const targetPrice = calculateTargetPrice({
+      orderSide: this.activeOrderSide,
+      price: this.price,
+      profit,
+    });
 
     const amountPercent = 0;
 
@@ -82,6 +98,6 @@ export class PlaceOrderStore {
       amountPercent,
     });
 
-    this.distributePercentsEqually(list);
+    this.distributePercentsInputs(list);
   };
 }

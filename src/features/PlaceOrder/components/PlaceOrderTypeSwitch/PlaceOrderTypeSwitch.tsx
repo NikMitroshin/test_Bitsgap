@@ -1,5 +1,5 @@
 import styles from "features/PlaceOrder/components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch.module.scss";
-import type { OrderSide } from "features/PlaceOrder/model";
+import { OrderSide } from "features/PlaceOrder/model";
 import { Button } from "shared/components/Button/Button";
 
 interface Props {
@@ -18,8 +18,8 @@ const PlaceOrderTypeSwitch = ({ activeOrderSide, onChange }: Props) => {
         color="green"
         fullWidth
         size="small"
-        inactive={activeOrderSide !== "buy"}
-        onClick={() => handleToggle("buy")}
+        inactive={activeOrderSide !== OrderSide.Buy}
+        onClick={() => handleToggle(OrderSide.Buy)}
       >
         Buy
       </Button>
@@ -27,8 +27,8 @@ const PlaceOrderTypeSwitch = ({ activeOrderSide, onChange }: Props) => {
         color="red"
         size="small"
         fullWidth
-        inactive={activeOrderSide === "buy"}
-        onClick={() => handleToggle("sell")}
+        inactive={activeOrderSide === OrderSide.Buy}
+        onClick={() => handleToggle(OrderSide.Sell)}
       >
         Sell
       </Button>

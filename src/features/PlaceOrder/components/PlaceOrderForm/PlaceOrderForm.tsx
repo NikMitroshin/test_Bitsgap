@@ -2,6 +2,7 @@ import styles from "features/PlaceOrder/components/PlaceOrderForm/PlaceOrderForm
 import { PlaceOrderTypeSwitch } from "features/PlaceOrder/components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch";
 import { TakeProfit } from "features/PlaceOrder/components/TakeProfit/TakeProfit";
 import { BASE_CURRENCY, QUOTE_CURRENCY } from "features/PlaceOrder/constants";
+import { OrderSide } from "features/PlaceOrder/model";
 import { useStore } from "features/PlaceOrder/store/context";
 import { observer } from "mobx-react";
 import { Button } from "shared/components/Button/Button";
@@ -49,11 +50,11 @@ export const PlaceOrderForm = observer(() => {
         <TakeProfit />
         <div className={styles.submit}>
           <Button
-            color={activeOrderSide === "buy" ? "green" : "red"}
+            color={activeOrderSide === OrderSide.Buy ? "green" : "red"}
             type="submit"
             fullWidth
           >
-            {activeOrderSide === "buy"
+            {activeOrderSide === OrderSide.Buy
               ? `Buy ${BASE_CURRENCY}`
               : `Sell ${QUOTE_CURRENCY}`}
           </Button>
