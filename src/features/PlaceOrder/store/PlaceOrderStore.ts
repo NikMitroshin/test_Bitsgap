@@ -19,18 +19,53 @@ export class PlaceOrderStore {
     return this.price * this.amount;
   }
 
+  /**
+   * Distribute the remaining interest among untouched inputs
+   */
   @action
   distributePercentsInputs = () => {
-    const percentEqually = Math.floor(100 / this.targetList.length);
+    let untouchedInputsCount = this.targetList.length;
 
-    const percentLast = 100 - percentEqually * (this.targetList.length - 1);
+    const distributedPercentsByUser = this.targetList.reduce(
+      (accumulator, item) => {
+        if (item.isUserEdit) {
+          untouchedInputsCount--;
+          return accumulator + item.amountPercent;
+        }
+        return accumulator;
+      },
+      0,
+    );
 
-    this.targetList = this.targetList.map((item, index) => {
-      return {
-        ...item,
-        amountPercent:
-          index === this.targetList.length - 1 ? percentLast : percentEqually,
-      };
+    const percentForDistribute =
+      distributedPercentsByUser < 100 ? 100 - distributedPercentsByUser : 0;
+
+    const percentEqually = Math.floor(
+      percentForDistribute / untouchedInputsCount,
+    );
+
+    const percentForFirst =
+      percentForDistribute - percentEqually * (untouchedInputsCount - 1);
+
+    let isRemaindersDistribute;
+
+    this.targetList = this.targetList.map((item) => {
+      if (!item.isUserEdit) {
+        if (!isRemaindersDistribute) {
+          isRemaindersDistribute = true;
+
+          return {
+            ...item,
+            amountPercent: percentForFirst,
+          };
+        }
+        return {
+          ...item,
+          amountPercent: percentEqually,
+        };
+      }
+
+      return item;
     });
   };
 
@@ -99,6 +134,7 @@ export class PlaceOrderStore {
       profit,
       targetPrice,
       amountPercent,
+      isUserEdit: false,
     });
 
     this.distributePercentsInputs();
@@ -109,5 +145,14 @@ export class PlaceOrderStore {
     this.targetList = this.targetList.filter((elem) => elem.id !== item.id);
 
     this.distributePercentsInputs();
+  };
+
+  @action
+  public setInputAmountPercent = (item: ProfitTargetItem) => {
+    this.targetList = this.targetList.map((elem) =>
+      elem.id === item.id
+        ? { ...elem, amountPercent: item.amountPercent, isUserEdit: true }
+        : elem,
+    );
   };
 }

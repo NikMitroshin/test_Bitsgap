@@ -7,12 +7,24 @@ import styles from "./TargetsList.module.scss";
 interface Props {
   targetList: ProfitTargetItem[];
   delNewTarget: (item: ProfitTargetItem) => void;
+  setInputAmountPercent: (item: ProfitTargetItem) => void;
 }
 
-const TargetsList = ({ targetList, delNewTarget }: Props) => {
+const TargetsList = ({
+  targetList,
+  delNewTarget,
+  setInputAmountPercent,
+}: Props) => {
   const handleDelTarget = useCallback(
-    (item: ProfitTargetItem) => {
+    (item: ProfitTargetItem) => () => {
       delNewTarget(item);
+    },
+    [delNewTarget],
+  );
+
+  const handleChangeInputAmountPercent = useCallback(
+    (item: ProfitTargetItem) => (value: number) => {
+      setInputAmountPercent({ ...item, amountPercent: value });
     },
     [delNewTarget],
   );
@@ -22,7 +34,8 @@ const TargetsList = ({ targetList, delNewTarget }: Props) => {
       <TargetItem
         key={item.id}
         targetItem={item}
-        handleDelTarget={handleDelTarget}
+        onDelTarget={handleDelTarget(item)}
+        onChangeInputAmountPercent={handleChangeInputAmountPercent(item)}
       />
     ));
 

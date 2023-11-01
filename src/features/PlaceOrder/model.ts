@@ -8,4 +8,5 @@ export type ProfitTargetItem = {
   profit: number;
   targetPrice: number;
   amountPercent: number;
+  isUserEdit: boolean;
 };

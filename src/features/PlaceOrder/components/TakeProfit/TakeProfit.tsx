@@ -15,6 +15,7 @@ export const TakeProfit = observer(() => {
     setIsTargetsOn,
     addNewTarget,
     delNewTarget,
+    setInputAmountPercent,
   } = useStore();
 
   return (
@@ -30,7 +31,11 @@ export const TakeProfit = observer(() => {
       {isTargetsOn && (
         <div className={styles.open}>
           {!!targetList.length && (
-            <TargetsList targetList={targetList} delNewTarget={delNewTarget} />
+            <TargetsList
+              targetList={targetList}
+              delNewTarget={delNewTarget}
+              setInputAmountPercent={setInputAmountPercent}
+            />
           )}
           <AddButton count={targetList.length} onPress={addNewTarget} />
           {/*profit*/}

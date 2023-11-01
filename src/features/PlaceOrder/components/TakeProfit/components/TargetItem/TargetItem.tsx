@@ -9,10 +9,15 @@ import { NumberInput } from "shared/components/NumberInput/NumberInput";
 import styles from "./TargetItem.module.scss";
 interface Props {
   targetItem: ProfitTargetItem;
-  handleDelTarget: (item: ProfitTargetItem) => void;
+  onDelTarget: () => void;
+  onChangeInputAmountPercent: (value: number) => void;
 }
 
-const TargetItem = ({ targetItem, handleDelTarget }: Props) => {
+const TargetItem = ({
+  targetItem,
+  onDelTarget,
+  onChangeInputAmountPercent,
+}: Props) => {
   const labelClasses: MUIInputLabelProps["classes"] = {
     root: styles.inputLabel,
   };
@@ -22,8 +27,8 @@ const TargetItem = ({ targetItem, handleDelTarget }: Props) => {
     input: styles.input,
   };
 
-  const handlePressDelete = () => {
-    handleDelTarget(targetItem);
+  const changeInputPercent = (value) => {
+    onChangeInputAmountPercent(value);
   };
 
   return (
@@ -48,7 +53,7 @@ const TargetItem = ({ targetItem, handleDelTarget }: Props) => {
         <NumberInput
           value={targetItem.amountPercent}
           max={100}
-          onChange={(value) => console.log(value)}
+          onChange={changeInputPercent}
           InputLabelProps={{ classes: labelClasses }}
           InputProps={{ classes: inputClasses }}
         />
@@ -56,7 +61,7 @@ const TargetItem = ({ targetItem, handleDelTarget }: Props) => {
       </div>
 
       <div className={cn(styles.column, styles.delete)}>
-        <ButtonOnlyIcon Icon={DeleteIcon} onPress={handlePressDelete} />
+        <ButtonOnlyIcon Icon={DeleteIcon} onPress={onDelTarget} />
       </div>
     </div>
   );
