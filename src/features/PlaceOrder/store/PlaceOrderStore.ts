@@ -1,6 +1,7 @@
 import { PROFIT_AMOUNT_STEP_DEFAULT } from "features/PlaceOrder/constants";
 import { calculateTargetPrice } from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
+import { dividedBy, minus, multipliedBy, plus } from "libs/bn";
 import { observable, computed, action, makeObservable } from "mobx";
 import { nanoid } from "nanoid";
 
@@ -16,7 +17,7 @@ export class PlaceOrderStore {
   @observable targetList: ProfitTargetItem[] = [];
 
   @computed get total(): number {
-    return this.price * this.amount;
+    return multipliedBy(this.price, this.amount);
   }
 
   /**
@@ -30,7 +31,7 @@ export class PlaceOrderStore {
       (accumulator, item) => {
         if (item.isUserEdit) {
           untouchedInputsCount--;
-          return accumulator + item.amountPercent;
+          return plus(accumulator, item.amountPercent);
         }
         return accumulator;
       },
@@ -38,14 +39,18 @@ export class PlaceOrderStore {
     );
 
     const percentForDistribute =
-      distributedPercentsByUser < 100 ? 100 - distributedPercentsByUser : 0;
+      distributedPercentsByUser < 100
+        ? minus(100, distributedPercentsByUser)
+        : 0;
 
     const percentEqually = Math.floor(
-      percentForDistribute / untouchedInputsCount,
+      dividedBy(percentForDistribute, untouchedInputsCount),
     );
 
-    const percentForFirst =
-      percentForDistribute - percentEqually * (untouchedInputsCount - 1);
+    const percentForFirst = minus(
+      percentForDistribute,
+      multipliedBy(percentEqually, minus(untouchedInputsCount, 1)),
+    );
 
     let isRemaindersDistribute;
 
@@ -102,7 +107,7 @@ export class PlaceOrderStore {
 
   @action
   public setTotal = (total: number) => {
-    this.amount = this.price > 0 ? total / this.price : 0;
+    this.amount = this.price > 0 ? dividedBy(total, this.price) : 0;
   };
 
   @action
@@ -120,7 +125,7 @@ export class PlaceOrderStore {
     const list = this.targetList;
     const lastElem = list[list.length - 1];
 
-    const profit = (lastElem?.profit || 0) + PROFIT_AMOUNT_STEP_DEFAULT;
+    const profit = plus(lastElem?.profit || 0, PROFIT_AMOUNT_STEP_DEFAULT);
     const targetPrice = calculateTargetPrice({
       orderSide: this.activeOrderSide,
       price: this.price,
