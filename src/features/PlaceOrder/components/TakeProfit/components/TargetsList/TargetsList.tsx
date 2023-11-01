@@ -7,13 +7,15 @@ import styles from "./TargetsList.module.scss";
 interface Props {
   targetList: ProfitTargetItem[];
   delNewTarget: (item: ProfitTargetItem) => void;
-  setInputAmountPercent: (item: ProfitTargetItem) => void;
+  setTargetItemInfo: (item: ProfitTargetItem) => void;
+  distributePercentsInputs: () => void;
 }
 
 const TargetsList = ({
   targetList,
   delNewTarget,
-  setInputAmountPercent,
+  setTargetItemInfo,
+  distributePercentsInputs,
 }: Props) => {
   const handleDelTarget = useCallback(
     (item: ProfitTargetItem) => () => {
@@ -22,12 +24,16 @@ const TargetsList = ({
     [delNewTarget],
   );
 
-  const handleChangeInputAmountPercent = useCallback(
-    (item: ProfitTargetItem) => (value: number) => {
-      setInputAmountPercent({ ...item, amountPercent: value });
+  const handleChangeInput = useCallback(
+    (item: ProfitTargetItem) => {
+      setTargetItemInfo(item);
     },
-    [delNewTarget],
+    [setTargetItemInfo],
   );
+
+  const handleBlurPercentInput = useCallback(() => {
+    distributePercentsInputs();
+  }, [distributePercentsInputs]);
 
   const renderTargetsList = () =>
     targetList.map((item) => (
@@ -35,7 +41,8 @@ const TargetsList = ({
         key={item.id}
         targetItem={item}
         onDelTarget={handleDelTarget(item)}
-        onChangeInputAmountPercent={handleChangeInputAmountPercent(item)}
+        handleChangeInput={handleChangeInput}
+        handleBlurPercentInput={handleBlurPercentInput}
       />
     ));
 

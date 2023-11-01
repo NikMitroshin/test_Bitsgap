@@ -20,11 +20,25 @@ export class PlaceOrderStore {
     return multipliedBy(this.price, this.amount);
   }
 
+  @action
+  distributePriceInputs = () => {
+    this.targetList = this.targetList.map((item) => {
+      return {
+        ...item,
+        targetPrice: calculateTargetPrice({
+          orderSide: this.activeOrderSide,
+          price: this.price,
+          profit: item.profit,
+        }),
+      };
+    });
+  };
+
   /**
    * Distribute the remaining interest among untouched inputs
    */
   @action
-  distributePercentsInputs = () => {
+  public distributePercentsInputs = () => {
     let untouchedInputsCount = this.targetList.length;
 
     const distributedPercentsByUser = this.targetList.reduce(
@@ -71,20 +85,6 @@ export class PlaceOrderStore {
       }
 
       return item;
-    });
-  };
-
-  @action
-  distributePriceInputs = () => {
-    this.targetList = this.targetList.map((item) => {
-      return {
-        ...item,
-        targetPrice: calculateTargetPrice({
-          orderSide: this.activeOrderSide,
-          price: this.price,
-          profit: item.profit,
-        }),
-      };
     });
   };
 
@@ -153,11 +153,9 @@ export class PlaceOrderStore {
   };
 
   @action
-  public setInputAmountPercent = (item: ProfitTargetItem) => {
-    this.targetList = this.targetList.map((elem) =>
-      elem.id === item.id
-        ? { ...elem, amountPercent: item.amountPercent, isUserEdit: true }
-        : elem,
+  public setTargetItemInfo = (newItem: ProfitTargetItem) => {
+    this.targetList = this.targetList.map((item) =>
+      item.id === newItem.id ? newItem : item,
     );
   };
 }

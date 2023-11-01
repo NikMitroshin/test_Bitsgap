@@ -10,13 +10,15 @@ import styles from "./TargetItem.module.scss";
 interface Props {
   targetItem: ProfitTargetItem;
   onDelTarget: () => void;
-  onChangeInputAmountPercent: (value: number) => void;
+  handleChangeInput: (item: ProfitTargetItem) => void;
+  handleBlurPercentInput: () => void;
 }
 
 const TargetItem = ({
   targetItem,
   onDelTarget,
-  onChangeInputAmountPercent,
+  handleChangeInput,
+  handleBlurPercentInput,
 }: Props) => {
   const labelClasses: MUIInputLabelProps["classes"] = {
     root: styles.inputLabel,
@@ -28,7 +30,18 @@ const TargetItem = ({
   };
 
   const changeInputPercent = (value) => {
-    onChangeInputAmountPercent(value);
+    handleChangeInput({
+      ...targetItem,
+      amountPercent: value || 0,
+      isUserEdit: true,
+    });
+  };
+
+  const changeInputProfit = (value) => {
+    handleChangeInput({
+      ...targetItem,
+      profit: value || 0,
+    });
   };
 
   return (
@@ -37,7 +50,7 @@ const TargetItem = ({
         <NumberInput
           value={targetItem.profit}
           max={500}
-          onChange={(value) => console.log(value)}
+          onChange={changeInputProfit}
           InputLabelProps={{ classes: labelClasses }}
           InputProps={{ classes: inputClasses }}
         />
@@ -56,6 +69,7 @@ const TargetItem = ({
           onChange={changeInputPercent}
           InputLabelProps={{ classes: labelClasses }}
           InputProps={{ classes: inputClasses }}
+          onBlur={() => handleBlurPercentInput()}
         />
         <div className={styles.label}>%</div>
       </div>
