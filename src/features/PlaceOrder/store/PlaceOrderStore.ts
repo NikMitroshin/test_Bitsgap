@@ -1,5 +1,8 @@
 import { PROFIT_AMOUNT_STEP_DEFAULT } from "features/PlaceOrder/constants";
-import { calculateTargetPrice } from "features/PlaceOrder/helpers/calculateHelpers";
+import {
+  calculateProfit,
+  calculateTargetPrice,
+} from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
 import { dividedBy, minus, multipliedBy, plus } from "libs/bn";
 import { observable, computed, action, makeObservable } from "mobx";
@@ -157,5 +160,32 @@ export class PlaceOrderStore {
     this.targetList = this.targetList.map((item) =>
       item.id === newItem.id ? newItem : item,
     );
+  };
+
+  @action
+  public setTargetProfitAndPriceDependency = ({
+    item,
+    isChangedProfit,
+  }: {
+    item: ProfitTargetItem;
+    isChangedProfit: boolean;
+  }) => {
+    this.setTargetItemInfo({
+      ...item,
+      targetPrice: isChangedProfit
+        ? calculateTargetPrice({
+            orderSide: this.activeOrderSide,
+            price: this.price,
+            profit: item.profit,
+          })
+        : item.targetPrice,
+      profit: isChangedProfit
+        ? item.profit
+        : calculateProfit({
+            orderSide: this.activeOrderSide,
+            price: this.price,
+            targetPrice: item.targetPrice,
+          }),
+    });
   };
 }

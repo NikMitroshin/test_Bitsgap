@@ -17,6 +17,7 @@ export const TakeProfit = observer(() => {
     delNewTarget,
     setTargetItemInfo,
     distributePercentsInputs,
+    setTargetProfitAndPriceDependency,
   } = useStore();
 
   return (
@@ -37,6 +38,9 @@ export const TakeProfit = observer(() => {
               delNewTarget={delNewTarget}
               setTargetItemInfo={setTargetItemInfo}
               distributePercentsInputs={distributePercentsInputs}
+              setTargetProfitAndPriceDependency={
+                setTargetProfitAndPriceDependency
+              }
             />
           )}
           <AddButton count={targetList.length} onPress={addNewTarget} />

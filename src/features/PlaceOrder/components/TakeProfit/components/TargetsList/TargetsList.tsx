@@ -9,6 +9,13 @@ interface Props {
   delNewTarget: (item: ProfitTargetItem) => void;
   setTargetItemInfo: (item: ProfitTargetItem) => void;
   distributePercentsInputs: () => void;
+  setTargetProfitAndPriceDependency: ({
+    item,
+    isChangedProfit,
+  }: {
+    item: ProfitTargetItem;
+    isChangedProfit: boolean;
+  }) => void;
 }
 
 const TargetsList = ({
@@ -16,6 +23,7 @@ const TargetsList = ({
   delNewTarget,
   setTargetItemInfo,
   distributePercentsInputs,
+  setTargetProfitAndPriceDependency,
 }: Props) => {
   const handleDelTarget = useCallback(
     (item: ProfitTargetItem) => () => {
@@ -24,7 +32,7 @@ const TargetsList = ({
     [delNewTarget],
   );
 
-  const handleChangeInput = useCallback(
+  const handleChangeTargetInfo = useCallback(
     (item: ProfitTargetItem) => {
       setTargetItemInfo(item);
     },
@@ -35,14 +43,22 @@ const TargetsList = ({
     distributePercentsInputs();
   }, [distributePercentsInputs]);
 
+  const handleBlurProfitAndPrice = useCallback(
+    (item: ProfitTargetItem) => (isChangedProfit) => {
+      setTargetProfitAndPriceDependency({ item, isChangedProfit });
+    },
+    [setTargetProfitAndPriceDependency],
+  );
+
   const renderTargetsList = () =>
     targetList.map((item) => (
       <TargetItem
         key={item.id}
         targetItem={item}
         onDelTarget={handleDelTarget(item)}
-        handleChangeInput={handleChangeInput}
+        handleChangeTargetInfo={handleChangeTargetInfo}
         handleBlurPercentInput={handleBlurPercentInput}
+        handleBlurProfitAndPrice={handleBlurProfitAndPrice(item)}
       />
     ));
 

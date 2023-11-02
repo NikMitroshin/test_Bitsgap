@@ -10,15 +10,17 @@ import styles from "./TargetItem.module.scss";
 interface Props {
   targetItem: ProfitTargetItem;
   onDelTarget: () => void;
-  handleChangeInput: (item: ProfitTargetItem) => void;
+  handleChangeTargetInfo: (item: ProfitTargetItem) => void;
   handleBlurPercentInput: () => void;
+  handleBlurProfitAndPrice: (isChangedProfit: boolean) => void;
 }
 
 const TargetItem = ({
   targetItem,
   onDelTarget,
-  handleChangeInput,
+  handleChangeTargetInfo,
   handleBlurPercentInput,
+  handleBlurProfitAndPrice,
 }: Props) => {
   const labelClasses: MUIInputLabelProps["classes"] = {
     root: styles.inputLabel,
@@ -30,7 +32,7 @@ const TargetItem = ({
   };
 
   const changeInputPercent = (value) => {
-    handleChangeInput({
+    handleChangeTargetInfo({
       ...targetItem,
       amountPercent: value || 0,
       isUserEdit: true,
@@ -38,11 +40,19 @@ const TargetItem = ({
   };
 
   const changeInputProfit = (value) => {
-    handleChangeInput({
+    handleChangeTargetInfo({
       ...targetItem,
       profit: value || 0,
     });
   };
+
+  const handleBlurProfit = () => {
+    handleBlurProfitAndPrice(true);
+  };
+
+  // const handleBlurTargetPrice = () => {
+  //   handleBlurProfitAndPrice(false);
+  // };
 
   return (
     <div className={styles.root}>
@@ -53,6 +63,7 @@ const TargetItem = ({
           onChange={changeInputProfit}
           InputLabelProps={{ classes: labelClasses }}
           InputProps={{ classes: inputClasses }}
+          onBlur={handleBlurProfit}
         />
         <div className={styles.label}>%</div>
       </div>
