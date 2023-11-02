@@ -1,18 +1,24 @@
+import { memo } from "react";
+
 import { InputLabelProps as MUIInputLabelProps } from "@mui/material/InputLabel/InputLabel";
 import * as cn from "classnames";
 import { QUOTE_CURRENCY } from "features/PlaceOrder/constants";
 import { ProfitTargetItem } from "features/PlaceOrder/model";
 import { DeleteIcon } from "icons/DeleteIcon/DeleteIcon";
+import { isEqual } from "lodash";
 import ButtonOnlyIcon from "shared/components/ButtonOnlyIcon/ButtonOnlyIcon";
 import { NumberInput } from "shared/components/NumberInput/NumberInput";
 
 import styles from "./TargetItem.module.scss";
 interface Props {
   targetItem: ProfitTargetItem;
-  onDelTarget: () => void;
+  onDelTarget: (item: ProfitTargetItem) => void;
   handleChangeTargetInfo: (item: ProfitTargetItem) => void;
   handleBlurPercentInput: () => void;
-  handleBlurProfitAndPrice: (isChangedProfit: boolean) => void;
+  handleBlurProfitAndPrice: (
+    item: ProfitTargetItem,
+    isChangedProfit: boolean,
+  ) => void;
 }
 
 const TargetItem = ({
@@ -54,11 +60,11 @@ const TargetItem = ({
   };
 
   const handleBlurProfit = () => {
-    handleBlurProfitAndPrice(true);
+    handleBlurProfitAndPrice(targetItem, true);
   };
 
   const handleBlurTargetPrice = () => {
-    handleBlurProfitAndPrice(false);
+    handleBlurProfitAndPrice(targetItem, false);
   };
   //TODO fix values / make 1 000 000
   return (
@@ -101,10 +107,13 @@ const TargetItem = ({
       </div>
 
       <div className={cn(styles.column, styles.delete)}>
-        <ButtonOnlyIcon Icon={DeleteIcon} onPress={onDelTarget} />
+        <ButtonOnlyIcon
+          Icon={DeleteIcon}
+          onPress={() => onDelTarget(targetItem)}
+        />
       </div>
     </div>
   );
 };
 
-export default TargetItem;
+export default memo(TargetItem, (prev, next) => isEqual(prev, next));
