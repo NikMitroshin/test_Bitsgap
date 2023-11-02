@@ -1,6 +1,7 @@
 import { PROFIT_AMOUNT_STEP_DEFAULT } from "features/PlaceOrder/constants";
 import {
   calculateProfit,
+  calculateProjectProfit,
   calculateTargetPrice,
 } from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
@@ -14,10 +15,11 @@ export class PlaceOrderStore {
   }
 
   @observable activeOrderSide: OrderSide = OrderSide.Buy;
-  @observable price = 0;
-  @observable amount = 0;
+  @observable price: number = 0;
+  @observable amount: number = 0;
   @observable isTargetsOn = false;
   @observable targetList: ProfitTargetItem[] = [];
+  @observable projectedProfit: number = 0;
 
   @computed get total(): number {
     return multipliedBy(this.price, this.amount);
@@ -89,6 +91,8 @@ export class PlaceOrderStore {
 
       return item;
     });
+
+    this.calculateProjectedProfit();
   };
 
   @action
@@ -106,11 +110,13 @@ export class PlaceOrderStore {
   @action
   public setAmount = (amount: number) => {
     this.amount = amount;
+    this.calculateProjectedProfit();
   };
 
   @action
   public setTotal = (total: number) => {
     this.amount = this.price > 0 ? dividedBy(total, this.price) : 0;
+    this.calculateProjectedProfit();
   };
 
   @action
@@ -160,6 +166,8 @@ export class PlaceOrderStore {
     this.targetList = this.targetList.map((item) =>
       item.id === newItem.id ? newItem : item,
     );
+
+    this.calculateProjectedProfit();
   };
 
   @action
@@ -187,5 +195,19 @@ export class PlaceOrderStore {
             targetPrice: item.targetPrice,
           }),
     });
+  };
+
+  @action
+  public calculateProjectedProfit = () => {
+    this.projectedProfit = this.targetList.reduce((accumulator, item) => {
+      const profit = calculateProjectProfit({
+        orderSide: this.activeOrderSide,
+        target: item,
+        targetAmount: this.amount,
+        formPrice: this.price,
+      });
+
+      return plus(accumulator, profit);
+    }, 0);
   };
 }

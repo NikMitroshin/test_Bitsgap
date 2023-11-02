@@ -13,6 +13,7 @@ export const TakeProfit = observer(() => {
   const {
     isTargetsOn,
     targetList,
+    projectedProfit,
     setIsTargetsOn,
     addNewTarget,
     delNewTarget,
@@ -45,7 +46,7 @@ export const TakeProfit = observer(() => {
             />
           )}
           <AddButton count={targetList.length} onPress={addNewTarget} />
-          <ProfitBox profit={10.123} />
+          <ProfitBox profit={projectedProfit} />
         </div>
       )}
     </div>
