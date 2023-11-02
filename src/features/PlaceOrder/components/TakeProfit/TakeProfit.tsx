@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import AddButton from "features/PlaceOrder/components/TakeProfit/components/AddButton/AddButton";
+import ProfitBox from "features/PlaceOrder/components/TakeProfit/components/ProfitBox/ProfitBox";
 import TargetsList from "features/PlaceOrder/components/TakeProfit/components/TargetsList/TargetsList";
 import { useStore } from "features/PlaceOrder/store/context";
 import { observer } from "mobx-react";
@@ -44,7 +45,7 @@ export const TakeProfit = observer(() => {
             />
           )}
           <AddButton count={targetList.length} onPress={addNewTarget} />
-          {/*profit*/}
+          <ProfitBox profit={10.123} />
         </div>
       )}
     </div>

@@ -60,7 +60,7 @@ const TargetItem = ({
   const handleBlurTargetPrice = () => {
     handleBlurProfitAndPrice(false);
   };
-
+  //TODO fix values / make 1 000 000
   return (
     <div className={styles.root}>
       <div className={styles.column}>
