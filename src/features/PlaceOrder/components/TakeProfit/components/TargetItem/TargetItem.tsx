@@ -83,6 +83,7 @@ const TargetItem = ({
 
       <div className={styles.column}>
         <NumberInput
+          min={0}
           value={targetItem.targetPrice}
           onChange={changeInputTargetPrice}
           InputLabelProps={{ classes: labelClasses }}
@@ -97,6 +98,7 @@ const TargetItem = ({
       <div className={styles.column}>
         <NumberInput
           value={targetItem.amountPercent}
+          min={0}
           max={100}
           onChange={changeInputPercent}
           InputLabelProps={{ classes: labelClasses }}

@@ -36,16 +36,19 @@ export const PlaceOrderForm = observer(() => {
           label={`Price, ${QUOTE_CURRENCY}`}
           value={price}
           onChange={(value) => setPrice(Number(value))}
+          min={0}
         />
         <NumberInput
           value={amount}
           label={`Amount, ${BASE_CURRENCY}`}
           onChange={(value) => setAmount(Number(value))}
+          min={0}
         />
         <NumberInput
           value={total}
           label={`Total, ${QUOTE_CURRENCY}`}
           onChange={(value) => setTotal(Number(value))}
+          min={0}
         />
         <TakeProfit />
         <div className={styles.submit}>
