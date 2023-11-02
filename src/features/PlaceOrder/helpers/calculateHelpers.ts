@@ -27,5 +27,9 @@ export const calculateProfit = ({
   price: number;
 }) =>
   orderSide === OrderSide.Buy
-    ? multipliedBy(minus(dividedBy(targetPrice, price), 1), 100)
-    : multipliedBy(plus(dividedBy(targetPrice, price), 1), 100);
+    ? price
+      ? multipliedBy(minus(dividedBy(targetPrice, price), 1), 100)
+      : 0
+    : price
+    ? multipliedBy(plus(dividedBy(targetPrice, price), 1), 100)
+    : 0;

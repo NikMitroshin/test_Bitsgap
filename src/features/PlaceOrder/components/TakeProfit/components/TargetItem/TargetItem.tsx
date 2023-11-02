@@ -46,13 +46,20 @@ const TargetItem = ({
     });
   };
 
+  const changeInputTargetPrice = (value) => {
+    handleChangeTargetInfo({
+      ...targetItem,
+      targetPrice: value || 0,
+    });
+  };
+
   const handleBlurProfit = () => {
     handleBlurProfitAndPrice(true);
   };
 
-  // const handleBlurTargetPrice = () => {
-  //   handleBlurProfitAndPrice(false);
-  // };
+  const handleBlurTargetPrice = () => {
+    handleBlurProfitAndPrice(false);
+  };
 
   return (
     <div className={styles.root}>
@@ -69,8 +76,16 @@ const TargetItem = ({
       </div>
 
       <div className={styles.column}>
-        <div className={styles.price}>{targetItem.targetPrice}</div>
-        <div className={styles.label}>{QUOTE_CURRENCY}</div>
+        <NumberInput
+          value={targetItem.targetPrice}
+          onChange={changeInputTargetPrice}
+          InputLabelProps={{ classes: labelClasses }}
+          InputProps={{ classes: inputClasses }}
+          onBlur={handleBlurTargetPrice}
+          isElastic
+          fontSize={"12px"}
+        />
+        <div className={cn(styles.label, styles.mark)}>{QUOTE_CURRENCY}</div>
       </div>
 
       <div className={styles.column}>

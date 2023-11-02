@@ -1,4 +1,5 @@
 import * as R from "remeda";
+import ElasticInput from "shared/components/ElasticInput/ElasticInput";
 import {
   TextInput,
   TextInputProps,
@@ -12,6 +13,8 @@ type Props = Omit<TextInputProps, "onChange" | "value"> & {
   max?: number;
   decimalScale?: number;
   onChange?(value: number | null): void;
+  fontSize?: string;
+  isElastic?: boolean;
 };
 
 function NumberInput({
@@ -25,6 +28,8 @@ function NumberInput({
   onMouseUp,
   onKeyUp,
   InputProps,
+  fontSize,
+  isElastic,
   ...rest
 }: Props) {
   const numberInput = R.omit(
@@ -35,7 +40,15 @@ function NumberInput({
     ),
     ["api"],
   );
-  return <TextInput {...rest} InputProps={{ ...InputProps, ...numberInput }} />;
+  return (
+    <ElasticInput
+      text={value?.toString()}
+      fontSize={fontSize}
+      isElastic={isElastic}
+    >
+      <TextInput {...rest} InputProps={{ ...InputProps, ...numberInput }} />
+    </ElasticInput>
+  );
 }
 
 export { NumberInput };
