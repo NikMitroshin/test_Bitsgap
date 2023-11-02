@@ -69,12 +69,12 @@ export class PlaceOrderStore {
       multipliedBy(percentEqually, minus(untouchedInputsCount, 1)),
     );
 
-    let isRemaindersDistribute;
+    let isRemaindersDistributed;
 
     this.targetList = this.targetList.map((item) => {
       if (!item.isUserEdit) {
-        if (!isRemaindersDistribute) {
-          isRemaindersDistribute = true;
+        if (!isRemaindersDistributed) {
+          isRemaindersDistributed = true;
 
           return {
             ...item,
