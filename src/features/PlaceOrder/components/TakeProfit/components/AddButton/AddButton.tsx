@@ -12,7 +12,7 @@ const AddButton = ({ count, onPress }: Props) => {
   if (count >= MAX_TARGETS_LENGTH) {
     return null;
   }
-  //TODO useMemo
+
   return (
     <div className={styles.root} onClick={onPress}>
       <PlusIcon />
