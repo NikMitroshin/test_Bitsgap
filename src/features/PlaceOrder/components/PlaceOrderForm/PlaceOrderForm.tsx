@@ -1,12 +1,13 @@
 import { FormEvent } from "react";
 
+import { observer } from "mobx-react";
+
 import styles from "features/PlaceOrder/components/PlaceOrderForm/PlaceOrderForm.module.scss";
 import { PlaceOrderTypeSwitch } from "features/PlaceOrder/components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch";
 import { TakeProfit } from "features/PlaceOrder/components/TakeProfit/TakeProfit";
 import { BASE_CURRENCY, QUOTE_CURRENCY } from "features/PlaceOrder/constants";
 import { OrderSide } from "features/PlaceOrder/model";
 import { useStore } from "features/PlaceOrder/store/context";
-import { observer } from "mobx-react";
 import { Button } from "shared/components/Button/Button";
 import ErrorMessage from "shared/components/ErrorMessage/ErrorMessage";
 import { NumberInput } from "shared/components/NumberInput/NumberInput";

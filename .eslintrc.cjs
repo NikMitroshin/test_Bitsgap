@@ -9,6 +9,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'plugin:prettier/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   env: {
     browser: true,
@@ -18,6 +20,13 @@ module.exports = {
   },
   parserOptions: {
     project: './tsconfig.json',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: './tsconfig.json',
+      }
+    }
   },
   ignorePatterns: ['.eslintrc.js', 'setupTests.ts', 'lint-staged.config.js', 'vite.config.ts'],
   rules: {

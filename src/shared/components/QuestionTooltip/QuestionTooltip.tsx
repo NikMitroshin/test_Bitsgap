@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import type { TooltipProps } from "@mui/material";
+
 import { Tooltip } from "shared/components/Tooltip/Tooltip";
 
 import { InfoIcon } from "./InfoIcon/InfoIcon";

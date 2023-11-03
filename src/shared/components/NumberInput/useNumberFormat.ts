@@ -9,6 +9,7 @@ import {
 } from "react";
 
 import * as R from "remeda";
+
 import { convertExponentialToNormal } from "shared/utils/convertExponentialToNormal";
 import { escapeRegexpSymbols } from "shared/utils/escapeRegexpSymbols";
 

@@ -1,4 +1,5 @@
 import { SvgIcon } from "@mui/material";
+
 import styles from "icons/PlusIcon/InfoIcon.module.scss";
 
 function PlusIcon() {

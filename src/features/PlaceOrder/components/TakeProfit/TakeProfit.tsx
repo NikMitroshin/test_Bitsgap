@@ -1,9 +1,10 @@
 import * as cn from "classnames";
+import { observer } from "mobx-react";
+
 import AddButton from "features/PlaceOrder/components/TakeProfit/components/AddButton/AddButton";
 import ProfitBox from "features/PlaceOrder/components/TakeProfit/components/ProfitBox/ProfitBox";
 import TargetsList from "features/PlaceOrder/components/TakeProfit/components/TargetsList/TargetsList";
 import { useStore } from "features/PlaceOrder/store/context";
-import { observer } from "mobx-react";
 import ErrorMessage from "shared/components/ErrorMessage/ErrorMessage";
 import { QuestionTooltip } from "shared/components/QuestionTooltip/QuestionTooltip";
 import { Switch } from "shared/components/Switch/Switch";

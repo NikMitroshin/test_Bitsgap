@@ -1,3 +1,6 @@
+import { observable, computed, action, makeObservable } from "mobx";
+import { nanoid } from "nanoid";
+
 import { PROFIT_AMOUNT_STEP_DEFAULT } from "features/PlaceOrder/constants";
 import {
   calculateProfit,
@@ -6,8 +9,6 @@ import {
 } from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
 import { dividedBy, minus, multipliedBy, plus } from "libs/bn";
-import { observable, computed, action, makeObservable } from "mobx";
-import { nanoid } from "nanoid";
 
 export class PlaceOrderStore {
   constructor() {

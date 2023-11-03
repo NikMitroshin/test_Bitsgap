@@ -2,10 +2,11 @@ import { memo } from "react";
 
 import { InputLabelProps as MUIInputLabelProps } from "@mui/material/InputLabel/InputLabel";
 import * as cn from "classnames";
+import { isEqual } from "lodash";
+
 import { QUOTE_CURRENCY } from "features/PlaceOrder/constants";
 import { ProfitTargetItem } from "features/PlaceOrder/model";
 import { DeleteIcon } from "icons/DeleteIcon/DeleteIcon";
-import { isEqual } from "lodash";
 import ButtonOnlyIcon from "shared/components/ButtonOnlyIcon/ButtonOnlyIcon";
 import { NumberInput } from "shared/components/NumberInput/NumberInput";
 
