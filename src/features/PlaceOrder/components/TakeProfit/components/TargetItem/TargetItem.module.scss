@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 13% 40% 13% 19%;
   gap: 0 5%;
-  padding: 9px 0 5px;
+  padding: 9px 0;
   border-bottom: 1px solid rgba(162, 167, 185, 0.5);
 
   &.error {
@@ -20,6 +20,10 @@
 .label {
   font-size: 12px;
   line-height: 14px;
+
+  &.error {
+    color: #F96C5A;
+  }
 }
 
 .mark {
@@ -40,6 +44,9 @@
   font-size: 12px;
   line-height: 14px;
   background-color: transparent;
+  &.error {
+    color: #F96C5A;
+  }
 
   .input {
     padding: 0;

@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 
+import styles from "./ElasticInput.module.scss";
 type Props = {
   isElastic: boolean | undefined;
   children: ReactNode;
@@ -15,11 +16,17 @@ const ElasticInput = ({ isElastic, fontSize, text, children }: Props) => {
   }, [text]);
 
   if (!isElastic) {
-    return <div>{children}</div>;
+    return <div className={styles.root}>{children}</div>;
   }
 
   return (
-    <div style={{ fontSize: fontSize ? fontSize : "inherit", width }}>
+    <div
+      className={styles.root}
+      style={{
+        fontSize: fontSize ? fontSize : "inherit",
+        width,
+      }}
+    >
       {children}
     </div>
   );

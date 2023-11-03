@@ -33,7 +33,9 @@ const TargetItem = ({
   };
 
   const inputClasses: MUIInputLabelProps["classes"] = {
-    root: styles.inputRoot,
+    root: cn(styles.inputRoot, {
+      [styles.error]: Boolean(targetItem.isError),
+    }),
     input: styles.input,
   };
 
@@ -82,7 +84,13 @@ const TargetItem = ({
           InputProps={{ classes: inputClasses }}
           onBlur={handleBlurProfit}
         />
-        <div className={styles.label}>%</div>
+        <div
+          className={cn(styles.label, {
+            [styles.error]: Boolean(targetItem.isError),
+          })}
+        >
+          %
+        </div>
       </div>
 
       <div className={styles.column}>
@@ -96,7 +104,13 @@ const TargetItem = ({
           isElastic
           fontSize={"12px"}
         />
-        <div className={cn(styles.label, styles.mark)}>{QUOTE_CURRENCY}</div>
+        <div
+          className={cn(styles.label, styles.mark, {
+            [styles.error]: Boolean(targetItem.isError),
+          })}
+        >
+          {QUOTE_CURRENCY}
+        </div>
       </div>
 
       <div className={styles.column}>
@@ -109,7 +123,13 @@ const TargetItem = ({
           InputProps={{ classes: inputClasses }}
           onBlur={() => handleBlurPercentInput()}
         />
-        <div className={styles.label}>%</div>
+        <div
+          className={cn(styles.label, {
+            [styles.error]: Boolean(targetItem.isError),
+          })}
+        >
+          %
+        </div>
       </div>
 
       <div className={cn(styles.column, styles.delete)}>
