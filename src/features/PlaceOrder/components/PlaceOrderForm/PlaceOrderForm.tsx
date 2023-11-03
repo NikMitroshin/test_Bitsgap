@@ -8,6 +8,7 @@ import { OrderSide } from "features/PlaceOrder/model";
 import { useStore } from "features/PlaceOrder/store/context";
 import { observer } from "mobx-react";
 import { Button } from "shared/components/Button/Button";
+import ErrorMessage from "shared/components/ErrorMessage/ErrorMessage";
 import { NumberInput } from "shared/components/NumberInput/NumberInput";
 import { QuestionTooltip } from "shared/components/QuestionTooltip/QuestionTooltip";
 
@@ -17,6 +18,8 @@ export const PlaceOrderForm = observer(() => {
     price,
     total,
     amount,
+    formErrorMessage,
+    isTargetsOn,
     setPrice,
     setAmount,
     setTotal,
@@ -64,6 +67,9 @@ export const PlaceOrderForm = observer(() => {
           min={0}
         />
         <TakeProfit />
+        {!!formErrorMessage && !isTargetsOn && (
+          <ErrorMessage text={formErrorMessage} />
+        )}
         <div className={styles.submit}>
           <Button
             color={activeOrderSide === OrderSide.Buy ? "green" : "red"}

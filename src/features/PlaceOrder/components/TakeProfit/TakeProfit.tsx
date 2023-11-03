@@ -4,6 +4,7 @@ import ProfitBox from "features/PlaceOrder/components/TakeProfit/components/Prof
 import TargetsList from "features/PlaceOrder/components/TakeProfit/components/TargetsList/TargetsList";
 import { useStore } from "features/PlaceOrder/store/context";
 import { observer } from "mobx-react";
+import ErrorMessage from "shared/components/ErrorMessage/ErrorMessage";
 import { QuestionTooltip } from "shared/components/QuestionTooltip/QuestionTooltip";
 import { Switch } from "shared/components/Switch/Switch";
 
@@ -14,6 +15,7 @@ export const TakeProfit = observer(() => {
     isTargetsOn,
     targetList,
     projectedProfit,
+    formErrorMessage,
     setIsTargetsOn,
     addNewTarget,
     delNewTarget,
@@ -45,6 +47,7 @@ export const TakeProfit = observer(() => {
               }
             />
           )}
+          {!!formErrorMessage && <ErrorMessage text={formErrorMessage} />}
           <AddButton count={targetList.length} onPress={addNewTarget} />
           <ProfitBox profit={projectedProfit} />
         </div>

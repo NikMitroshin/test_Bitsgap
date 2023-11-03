@@ -20,6 +20,7 @@ export class PlaceOrderStore {
   @observable isTargetsOn = false;
   @observable targetList: ProfitTargetItem[] = [];
   @observable projectedProfit: number = 0;
+  @observable formErrorMessage: string = "";
 
   @computed get total(): number {
     return multipliedBy(this.price, this.amount);
@@ -101,6 +102,7 @@ export class PlaceOrderStore {
   public setOrderSide = (side: OrderSide) => {
     this.setIsTargetsOn(false);
     this.activeOrderSide = side;
+    this.formErrorMessage = "";
   };
 
   @action
@@ -201,6 +203,7 @@ export class PlaceOrderStore {
 
   @action
   public calculateProjectedProfit = () => {
+    this.formErrorMessage = "";
     this.projectedProfit = this.targetList.reduce((accumulator, item) => {
       const profit = calculateProjectProfit({
         orderSide: this.activeOrderSide,
@@ -215,10 +218,9 @@ export class PlaceOrderStore {
 
   @action
   public validateForm = () => {
-    // price > 0 (Общая)
+    // price <= 0
     if (this.price <= 0) {
-      console.log("price > 0 (Общая)");
-      // error
+      this.formErrorMessage = "Price must be greater than 0";
       return false;
     }
 
@@ -226,23 +228,22 @@ export class PlaceOrderStore {
       return true;
     }
 
-    // cумма profit <= 500 (Общая)
+    // cумма profit > 500
     const profitSum = this.targetList.reduce((accumulator, item) => {
       return plus(accumulator, item.profit);
     }, 0);
     if (profitSum > 500) {
-      console.log("cумма profit <= 500 (Общая)");
-      // error
+      this.formErrorMessage = "Maximum profit sum is 500%";
       return false;
     }
 
-    // profit > 0.01 (ПО ИНПУТУ)
+    // profit < 0.01 (ПО ИНПУТУ)
     const targetWithSmallProfit = this.targetList.find(
       (item) => item.profit < 0.01,
     );
     if (targetWithSmallProfit) {
       console.log("profit > 0.01 (ПО ИНПУТУ)", toJS(targetWithSmallProfit));
-      // error targetWithSmallProfit
+      this.formErrorMessage = "Minimum value is 0.01";
       return false;
     }
 
@@ -257,25 +258,27 @@ export class PlaceOrderStore {
         "profit значение каждого больше предыдущего (ПО ИНПУТУ)",
         toJS(targetSmallerThanPrev),
       );
-      // error targetWithSmallProfit
+      this.formErrorMessage =
+        "Each target's profit should be greater than the previous one";
       return false;
     }
 
-    // сумма всех процентов > 100 (Общая)
+    // сумма всех процентов >/< 100
     const percentSum = this.targetList.reduce((accumulator, item) => {
       return plus(accumulator, item.amountPercent);
     }, 0);
-
     if (percentSum > 100) {
-      console.log("сумма всех процентов > 100 (Общая)");
-      // error
+      this.formErrorMessage = `${percentSum} out of 100% selected. Please decrease by ${minus(
+        percentSum,
+        100,
+      )}`;
       return false;
     }
-
-    // сумма всех процентов < 100  (Общая)
     if (percentSum < 100) {
-      console.log("сумма всех процентов < 100  (Общая)");
-      // error
+      this.formErrorMessage = `${percentSum} out of 100% selected. Please increase by ${minus(
+        100,
+        percentSum,
+      )}`;
       return false;
     }
 
