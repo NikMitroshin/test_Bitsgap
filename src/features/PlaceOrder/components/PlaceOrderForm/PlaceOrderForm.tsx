@@ -21,6 +21,7 @@ export const PlaceOrderForm = observer(() => {
     amount,
     formErrorMessage,
     isTargetsOn,
+    targetList,
     setPrice,
     setAmount,
     setTotal,
@@ -31,11 +32,15 @@ export const PlaceOrderForm = observer(() => {
   const handleValidateForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) {
-      console.log("nevernaya forma");
       return;
     }
 
     console.log("yspex");
+    alert(
+      `Отправлено! \n Цена:${price}; Кол-во${amount};  \n ${
+        !!targetList.length && `Цели: ${JSON.stringify(targetList)}`
+      }`,
+    );
   };
 
   return (
