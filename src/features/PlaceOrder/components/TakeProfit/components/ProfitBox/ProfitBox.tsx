@@ -14,7 +14,7 @@ const ProfitBox = ({ profit }: Props) => {
       <div className={styles.divider} />
 
       <div className={styles.value}>
-        <div className={styles.amount}>{profit}</div>
+        <div className={styles.amount}>{profit.toFixed(2)}</div>
         <div className={styles.currency}>{QUOTE_CURRENCY}</div>
       </div>
     </div>

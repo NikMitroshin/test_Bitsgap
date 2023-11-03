@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 13% 40% 13% 19%;
   gap: 0 5%;
-  padding: 9px 0;
+  padding: 9px 0 6px;
   border-bottom: 1px solid rgba(162, 167, 185, 0.5);
 
   &.error {

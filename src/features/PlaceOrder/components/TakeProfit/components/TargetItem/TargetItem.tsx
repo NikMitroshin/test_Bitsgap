@@ -97,6 +97,7 @@ const TargetItem = ({
       <div className={styles.column}>
         <NumberInput
           min={0}
+          decimalScale={2}
           value={targetItem.targetPrice}
           onChange={changeInputTargetPrice}
           InputLabelProps={{ classes: labelClasses }}
