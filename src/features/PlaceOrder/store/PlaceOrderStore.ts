@@ -244,6 +244,12 @@ export class PlaceOrderStore {
       return false;
     }
 
+    // amount <= 0
+    if (this.amount <= 0) {
+      this.formErrorMessage = "Amount must be greater than 0";
+      return false;
+    }
+
     if (!this.isTargetsOn) {
       return true;
     }
