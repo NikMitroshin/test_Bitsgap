@@ -6,7 +6,7 @@ import {
 } from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
 import { dividedBy, minus, multipliedBy, plus } from "libs/bn";
-import { observable, computed, action, makeObservable } from "mobx";
+import { observable, computed, action, makeObservable, toJS } from "mobx";
 import { nanoid } from "nanoid";
 
 export class PlaceOrderStore {
@@ -211,5 +211,74 @@ export class PlaceOrderStore {
 
       return plus(accumulator, profit);
     }, 0);
+  };
+
+  @action
+  public validateForm = () => {
+    // price > 0 (Общая)
+    if (this.price <= 0) {
+      console.log("price > 0 (Общая)");
+      // error
+      return false;
+    }
+
+    if (!this.isTargetsOn) {
+      return true;
+    }
+
+    // cумма profit <= 500 (Общая)
+    const profitSum = this.targetList.reduce((accumulator, item) => {
+      return plus(accumulator, item.profit);
+    }, 0);
+    if (profitSum > 500) {
+      console.log("cумма profit <= 500 (Общая)");
+      // error
+      return false;
+    }
+
+    // profit > 0.01 (ПО ИНПУТУ)
+    const targetWithSmallProfit = this.targetList.find(
+      (item) => item.profit < 0.01,
+    );
+    if (targetWithSmallProfit) {
+      console.log("profit > 0.01 (ПО ИНПУТУ)", toJS(targetWithSmallProfit));
+      // error targetWithSmallProfit
+      return false;
+    }
+
+    // profit значение каждого больше предыдущего (ПО ИНПУТУ)
+    const targetSmallerThanPrev = this.targetList.find(
+      (item, index) =>
+        this.targetList[index - 1] &&
+        item.profit <= this.targetList[index - 1].profit,
+    );
+    if (targetSmallerThanPrev) {
+      console.log(
+        "profit значение каждого больше предыдущего (ПО ИНПУТУ)",
+        toJS(targetSmallerThanPrev),
+      );
+      // error targetWithSmallProfit
+      return false;
+    }
+
+    // сумма всех процентов > 100 (Общая)
+    const percentSum = this.targetList.reduce((accumulator, item) => {
+      return plus(accumulator, item.amountPercent);
+    }, 0);
+
+    if (percentSum > 100) {
+      console.log("сумма всех процентов > 100 (Общая)");
+      // error
+      return false;
+    }
+
+    // сумма всех процентов < 100  (Общая)
+    if (percentSum < 100) {
+      console.log("сумма всех процентов < 100  (Общая)");
+      // error
+      return false;
+    }
+
+    return true;
   };
 }

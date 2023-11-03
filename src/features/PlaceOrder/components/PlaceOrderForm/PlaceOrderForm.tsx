@@ -1,3 +1,5 @@
+import { FormEvent } from "react";
+
 import styles from "features/PlaceOrder/components/PlaceOrderForm/PlaceOrderForm.module.scss";
 import { PlaceOrderTypeSwitch } from "features/PlaceOrder/components/PlaceOrderTypeSwitch/PlaceOrderTypeSwitch";
 import { TakeProfit } from "features/PlaceOrder/components/TakeProfit/TakeProfit";
@@ -19,10 +21,21 @@ export const PlaceOrderForm = observer(() => {
     setAmount,
     setTotal,
     setOrderSide,
+    validateForm,
   } = useStore();
 
+  const handleValidateForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      console.log("nevernaya forma");
+      return;
+    }
+
+    console.log("yspex");
+  };
+
   return (
-    <form className={styles.root}>
+    <form className={styles.root} onSubmit={(e) => handleValidateForm(e)}>
       <div className={styles.label}>
         Market direction{" "}
         <QuestionTooltip message="Market direction description" />
