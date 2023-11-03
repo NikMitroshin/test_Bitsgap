@@ -68,7 +68,11 @@ const TargetItem = ({
   };
   //TODO fix values / make 1 000 000
   return (
-    <div className={styles.root}>
+    <div
+      className={cn(styles.root, {
+        [styles.error]: Boolean(targetItem.isError),
+      })}
+    >
       <div className={styles.column}>
         <NumberInput
           value={targetItem.profit}

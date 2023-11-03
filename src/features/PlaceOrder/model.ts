@@ -9,4 +9,5 @@ export type ProfitTargetItem = {
   targetPrice: number;
   amountPercent: number;
   isUserEdit: boolean;
+  isError: boolean;
 };

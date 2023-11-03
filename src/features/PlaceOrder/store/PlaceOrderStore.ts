@@ -6,7 +6,7 @@ import {
 } from "features/PlaceOrder/helpers/calculateHelpers";
 import { OrderSide, ProfitTargetItem } from "features/PlaceOrder/model";
 import { dividedBy, minus, multipliedBy, plus } from "libs/bn";
-import { observable, computed, action, makeObservable, toJS } from "mobx";
+import { observable, computed, action, makeObservable } from "mobx";
 import { nanoid } from "nanoid";
 
 export class PlaceOrderStore {
@@ -47,6 +47,7 @@ export class PlaceOrderStore {
    */
   @action
   public distributePercentsInputs = () => {
+    this.resetFormError();
     let untouchedInputsCount = this.targetList.length;
 
     const distributedPercentsByUser = this.targetList.reduce(
@@ -102,7 +103,7 @@ export class PlaceOrderStore {
   public setOrderSide = (side: OrderSide) => {
     this.setIsTargetsOn(false);
     this.activeOrderSide = side;
-    this.formErrorMessage = "";
+    this.resetFormError();
   };
 
   @action
@@ -114,13 +115,23 @@ export class PlaceOrderStore {
   @action
   public setAmount = (amount: number) => {
     this.amount = amount;
+    this.resetFormError();
     this.calculateProjectedProfit();
   };
 
   @action
   public setTotal = (total: number) => {
     this.amount = this.price > 0 ? dividedBy(total, this.price) : 0;
+    this.resetFormError();
     this.calculateProjectedProfit();
+  };
+
+  @action
+  public resetFormError = () => {
+    this.formErrorMessage = "";
+    this.targetList = this.targetList.map((item) => {
+      return { ...item, isError: false };
+    });
   };
 
   @action
@@ -128,6 +139,7 @@ export class PlaceOrderStore {
     if (value) {
       this.addNewTarget();
     } else {
+      this.resetFormError();
       this.targetList = [];
     }
     this.isTargetsOn = value;
@@ -153,6 +165,7 @@ export class PlaceOrderStore {
       targetPrice,
       amountPercent,
       isUserEdit: false,
+      isError: false,
     });
 
     this.distributePercentsInputs();
@@ -166,7 +179,14 @@ export class PlaceOrderStore {
   };
 
   @action
-  public setTargetItemInfo = (newItem: ProfitTargetItem) => {
+  public setTargetItemInfo = (
+    newItem: ProfitTargetItem,
+    isWithoutResetError?: boolean,
+  ) => {
+    if (!isWithoutResetError) {
+      this.resetFormError();
+    }
+
     this.targetList = this.targetList.map((item) =>
       item.id === newItem.id ? newItem : item,
     );
@@ -203,7 +223,6 @@ export class PlaceOrderStore {
 
   @action
   public calculateProjectedProfit = () => {
-    this.formErrorMessage = "";
     this.projectedProfit = this.targetList.reduce((accumulator, item) => {
       const profit = calculateProjectProfit({
         orderSide: this.activeOrderSide,
@@ -218,6 +237,7 @@ export class PlaceOrderStore {
 
   @action
   public validateForm = () => {
+    this.resetFormError();
     // price <= 0
     if (this.price <= 0) {
       this.formErrorMessage = "Price must be greater than 0";
@@ -237,27 +257,24 @@ export class PlaceOrderStore {
       return false;
     }
 
-    // profit < 0.01 (ПО ИНПУТУ)
+    // profit < 0.01
     const targetWithSmallProfit = this.targetList.find(
       (item) => item.profit < 0.01,
     );
     if (targetWithSmallProfit) {
-      console.log("profit > 0.01 (ПО ИНПУТУ)", toJS(targetWithSmallProfit));
+      this.setTargetItemInfo({ ...targetWithSmallProfit, isError: true }, true);
       this.formErrorMessage = "Minimum value is 0.01";
       return false;
     }
 
-    // profit значение каждого больше предыдущего (ПО ИНПУТУ)
+    // profit значение каждого больше предыдущего
     const targetSmallerThanPrev = this.targetList.find(
       (item, index) =>
         this.targetList[index - 1] &&
         item.profit <= this.targetList[index - 1].profit,
     );
     if (targetSmallerThanPrev) {
-      console.log(
-        "profit значение каждого больше предыдущего (ПО ИНПУТУ)",
-        toJS(targetSmallerThanPrev),
-      );
+      this.setTargetItemInfo({ ...targetSmallerThanPrev, isError: true }, true);
       this.formErrorMessage =
         "Each target's profit should be greater than the previous one";
       return false;
